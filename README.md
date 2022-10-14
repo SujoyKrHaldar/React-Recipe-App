@@ -9,5 +9,5 @@ Recipe finder website using react js and external api.
 - Tailwind CSS
 - Spoonacular API
 
-[Live Url](https://hostinger-redesign.vercel.app/)
+[Live Url](https://recipe-finder-by-spoonacular-api.netlify.app)
 
