@@ -7,8 +7,8 @@ function SearchBar() {
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
-    // navigate(`/search/${searchQuery.trim().replaceAll(" ","-")}`);
-    navigate(`/search/${searchQuery}`);
+    navigate(`/search/${searchQuery.trim().replaceAll(" ", "-")}`);
+    // navigate(`/search/${searchQuery}`);
   };
   return (
     <form
