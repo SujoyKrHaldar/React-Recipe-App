@@ -2,20 +2,29 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import RecipeCard from "../components/design/RecipeCard";
+import Loading from "../components/design/Loading";
+import ApiError from "../components/design/ApiError";
 
 function Category() {
   const { id } = useParams();
 
   const [cuisine, setCuisine] = useState([]);
+  const [apiError, setApiError] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   const getRecipes = async (name) => {
+    setLoading(true);
     const res = await fetch(
       `https://api.spoonacular.com/recipes/complexSearch?apiKey=${
         import.meta.env.VITE_API_KEY
       }&cuisine=${name}`
     );
-    const { results } = await res.json();
-    setCuisine(results);
+    const data = await res.json();
+    if (data.code === 402) {
+      setApiError(true);
+    }
+    setCuisine(data.results);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -33,23 +42,29 @@ function Category() {
         />
       </Helmet>
 
-      <section className="py-8">
-        {cuisine.length > 0 ? (
-          <div className="space-y-6">
-            <h1 className="font-bold text-2xl first-letter:uppercase">
-              {id} foods
-            </h1>
+      {isLoading && <Loading message="Loading" />}
 
-            <div className="grid grid-cols-4 gap-4">
-              {cuisine.map((data) => (
-                <RecipeCard key={data.id} data={data} className="h-[260px]" />
-              ))}
+      {!isLoading && apiError && <ApiError />}
+
+      {!isLoading && !apiError && (
+        <section className="py-8">
+          {cuisine.length > 0 ? (
+            <div className="space-y-6">
+              <h1 className="font-bold text-2xl first-letter:uppercase">
+                {id} foods
+              </h1>
+
+              <div className="grid grid-cols-4 gap-4">
+                {cuisine.map((data) => (
+                  <RecipeCard key={data.id} data={data} className="h-[260px]" />
+                ))}
+              </div>
             </div>
-          </div>
-        ) : (
-          <h1 className="font-bold text-2xl">No Food found!</h1>
-        )}
-      </section>
+          ) : (
+            <h1 className="font-bold text-2xl">No Food found!</h1>
+          )}
+        </section>
+      )}
     </>
   );
 }

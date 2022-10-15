@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import Random from "../components/main/Random";
 import Veggie from "../components/main/Veggie";
