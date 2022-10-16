@@ -4,6 +4,16 @@ import { Helmet } from "react-helmet";
 import Loading from "../components/design/Loading";
 import ApiError from "../components/design/ApiError";
 
+const nav = [
+  {
+    name: "Instructions",
+    tab: "instructions",
+  },
+  {
+    name: "Ingredientes",
+    tab: "ingredients",
+  },
+];
 function Recipe() {
   const { id } = useParams();
 
@@ -32,13 +42,16 @@ function Recipe() {
     getDetails(id);
   }, [id]);
 
+  console.log(details);
   return (
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>
-          {setApiError ? "Api Error - try again later" : `${details.title}`}
-        </title>
+        {isLoading ? (
+          <title>Loading... </title>
+        ) : (
+          <title>{details?.title || "Api Error - try again later"}</title>
+        )}
         <link
           rel="canonical"
           href={`https://react-recipe-finder-2022.netlify.app/recipe/${id}`}
@@ -50,45 +63,63 @@ function Recipe() {
       {!isLoading && apiError && <ApiError />}
 
       {!isLoading && !apiError && (
-        <section className="py-16 flex justify-between gap-8 ">
-          <div className="flex-1">
-            <div className="">
-              <h1 className="text-3xl font-bold">{details.title}</h1>
+        <section className="py-16">
+          <div className="space-y-4 mb-8">
+            <h1 className="text-3xl font-bold">{details.title}</h1>
+            <p
+              className="max-w-5xl"
+              dangerouslySetInnerHTML={{ __html: details.summary }}
+            />
+          </div>
 
-              <div className="flex gap-4">
+          <div className="flex items-start gap-8 justify-between ">
+            <div className="flex-1 space-y-4">
+              <div className="flex gap-8">
+                {nav.map((data) => (
+                  <p
+                    key={data.name}
+                    onClick={() => setActiveTab(data.tab)}
+                    className={`${
+                      activeTab === data.tab
+                        ? "border-b-2 border-b-black-500"
+                        : ""
+                    } cursor-pointer pb-4 font-bold`}
+                  >
+                    {data.name}
+                  </p>
+                ))}
+              </div>
+
+              <div className="max-w-lg">
                 <p
-                  onClick={() => setActiveTab("instructions")}
                   className={`${
                     activeTab === "instructions"
-                      ? "border-b border-b-black-500"
-                      : ""
-                  } cursor-pointer py-4`}
-                >
-                  Instructions
-                </p>
-                <p
-                  onClick={() => setActiveTab("ingredients")}
+                      ? "opacity-100 pointer-events-auto"
+                      : "opacity-0 pointer-events-none"
+                  } duration-300 absolute w-full h-fit inset-0`}
+                  dangerouslySetInnerHTML={{ __html: details.instructions }}
+                />
+
+                <div
                   className={`${
                     activeTab === "ingredients"
-                      ? "border-b border-b-black-500"
-                      : ""
-                  } cursor-pointer py-4`}
+                      ? "opacity-100 pointer-events-auto"
+                      : "opacity-0 pointer-events-none"
+                  } duration-300 absolute w-full h-fit inset-0 space-y-1`}
                 >
-                  Ingredientes
-                </p>
+                  {details?.extendedIngredients.map((data) => (
+                    <p key={data.id}>{data.original}</p>
+                  ))}
+                </div>
               </div>
             </div>
-
-            <div className="">
-              <p>{details.summary}</p>
+            <div className="flex-1">
+              <img
+                className="rounded-xl"
+                src={details.image}
+                alt={details.title}
+              />
             </div>
-          </div>
-          <div className="flex-1">
-            <img
-              className="rounded-xl"
-              src={details.image}
-              alt={details.title}
-            />
           </div>
         </section>
       )}
