@@ -4,33 +4,18 @@ import { Helmet } from "react-helmet";
 import RecipeCard from "../components/design/RecipeCard";
 import Loading from "../components/design/Loading";
 import ApiError from "../components/design/ApiError";
+import { useFetch } from "../components/hook/useFetch";
 
 function Search() {
   const { id } = useParams();
   const query = id.replaceAll("-", " ");
 
-  const [reqdata, setReqData] = useState([]);
-  const [apiError, setApiError] = useState(false);
-  const [isLoading, setLoading] = useState(false);
-
-  const getSearchedData = async (name) => {
-    setLoading(true);
-    const res = await fetch(
-      `https://api.spoonacular.com/recipes/complexSearch?apiKey=${
-        import.meta.env.VITE_API_KEY
-      }&query=${name}`
-    );
-    const data = await res.json();
-    if (data.code === 402) {
-      setApiError(true);
-    }
-    setReqData(data.results);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    getSearchedData(query);
-  }, [id]);
+  const { isLoading, apiError, reqData } = useFetch(
+    `https://api.spoonacular.com/recipes/complexSearch?apiKey=${
+      import.meta.env.VITE_API_KEY
+    }&query=${query}`,
+    id
+  );
 
   return (
     <>
@@ -45,12 +30,12 @@ function Search() {
 
       {!isLoading && !apiError && (
         <section className="py-8">
-          {reqdata.length > 0 ? (
+          {reqData.length > 0 ? (
             <div className="space-y-6">
               <h1 className="font-bold text-2xl">Searched result - {query}</h1>
 
               <div className="grid grid-cols-4 gap-4">
-                {reqdata.map((data) => (
+                {reqData.map((data) => (
                   <RecipeCard key={data.id} data={data} className="h-[260px]" />
                 ))}
               </div>
@@ -65,3 +50,28 @@ function Search() {
 }
 
 export default Search;
+
+// data fetching -
+
+// const [reqdata, setReqData] = useState([]);
+// const [apiError, setApiError] = useState(false);
+// const [isLoading, setLoading] = useState(false);
+
+// const getSearchedData = async (name) => {
+//   setLoading(true);
+//   const res = await fetch(
+//     `https://api.spoonacular.com/recipes/complexSearch?apiKey=${
+//       import.meta.env.VITE_API_KEY
+//     }&query=${name}`
+//   );
+//   const data = await res.json();
+//   if (data.code === 402) {
+//     setApiError(true);
+//   }
+//   setReqData(data.results);
+//   setLoading(false);
+// };
+
+// useEffect(() => {
+//   getSearchedData(query);
+// }, [id]);
