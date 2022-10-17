@@ -100,17 +100,19 @@ function Recipe() {
                   dangerouslySetInnerHTML={{ __html: details.instructions }}
                 />
 
-                <div
-                  className={`${
-                    activeTab === "ingredients"
-                      ? "opacity-100 pointer-events-auto"
-                      : "opacity-0 pointer-events-none"
-                  } duration-300 absolute w-full h-fit inset-0 space-y-1`}
-                >
-                  {details?.extendedIngredients.map((data) => (
-                    <p key={data.id}>{data.original}</p>
-                  ))}
-                </div>
+                {details?.extendedIngredients && (
+                  <div
+                    className={`${
+                      activeTab === "ingredients"
+                        ? "opacity-100 pointer-events-auto"
+                        : "opacity-0 pointer-events-none"
+                    } duration-300 absolute w-full h-fit inset-0 space-y-1`}
+                  >
+                    {details?.extendedIngredients.map((data) => (
+                      <p key={data.id}>{data.original}</p>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex-1">
