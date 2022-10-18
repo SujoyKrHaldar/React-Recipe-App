@@ -23,8 +23,7 @@ function Recipe() {
   const { isLoading, apiError, reqData } = useFetch(
     `https://api.spoonacular.com/recipes/${id}/information?apiKey=${
       import.meta.env.VITE_API_KEY
-    }`,
-    id
+    }`
   );
 
   return (

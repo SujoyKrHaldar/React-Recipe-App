@@ -5,7 +5,6 @@ function RecipeCard({ data, className = "w-full h-[330px]" }) {
   return (
     <Link
       to={`/recipe/${data.id}`}
-      // to={`/recipe/${data.title.trim().replaceAll(" ", "-").toLowerCase()}`}
       className={`bg-black-500 flex items-end justify-start 
                p-6 overflow-hidden rounded-2xl ${className} `}
     >
