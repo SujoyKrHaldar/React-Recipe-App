@@ -2,7 +2,7 @@
 
 # React-Recipe-App
 
-[Live Url](https://recipe-finder-by-spoonacular-api.netlify.app)
+[Live Url](https://react-recipe-finder-2022.netlify.app/)
 
 Recipe finder website using react js and external api.
 Custom hook (useFetch) to fetch data from API.
