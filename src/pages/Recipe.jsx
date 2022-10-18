@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import Loading from "../components/design/Loading";
 import ApiError from "../components/design/ApiError";
 import { useFetch } from "../components/hook/useFetch";
+import LoadingContent from "../components/design/LoadingContent";
 
 const nav = [
   {
@@ -44,7 +44,7 @@ function Recipe() {
         />
       </Helmet>
 
-      {isLoading && <Loading message="Loading" />}
+      {isLoading && <LoadingContent message="Loading" />}
 
       {!isLoading && apiError && <ApiError />}
 

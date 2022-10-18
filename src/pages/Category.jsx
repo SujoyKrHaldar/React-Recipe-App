@@ -27,7 +27,7 @@ function Category() {
         />
       </Helmet>
 
-      {isLoading && <Loading message="Loading" />}
+      {isLoading && <Loading message={`Loading ${id} foods`} />}
 
       {!isLoading && apiError && <ApiError />}
 
@@ -41,7 +41,7 @@ function Category() {
 
               <div className="grid grid-cols-4 gap-4">
                 {reqData.results.map((data) => (
-                  <RecipeCard key={data.id} data={data} className="h-[260px]" />
+                  <RecipeCard key={data.id} data={data} />
                 ))}
               </div>
             </div>
