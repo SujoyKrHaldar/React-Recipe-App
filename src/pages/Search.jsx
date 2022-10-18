@@ -17,6 +17,8 @@ function Search() {
     id
   );
 
+  console.log(reqData);
+
   return (
     <>
       <Helmet>
@@ -30,12 +32,12 @@ function Search() {
 
       {!isLoading && !apiError && (
         <section className="py-8">
-          {reqData.length > 0 ? (
+          {reqData?.results.length > 0 ? (
             <div className="space-y-6">
               <h1 className="font-bold text-2xl">Searched result - {query}</h1>
 
               <div className="grid grid-cols-4 gap-4">
-                {reqData.map((data) => (
+                {reqData?.results.map((data) => (
                   <RecipeCard key={data.id} data={data} className="h-[260px]" />
                 ))}
               </div>
